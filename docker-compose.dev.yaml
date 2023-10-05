@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: app
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app
+    environment:
+      PORT: 8080
+      NAME: helper_app
+      LOG_LEVEL: trace
+      DATABASE_HOST: database
+      DATABASE_PORT: 5432
+      DATABASE_USER: username
+      DATABASE_PASS: password
+      DATABASE_NAME: helper
+    
+
+  database:
+    image: postgres:16.0
+    ports:
+      - "5432:9999"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: username
+      POSTGRES_DB: helper
+      
