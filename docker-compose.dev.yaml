@@ -19,6 +19,7 @@ services:
       DATABASE_USER: username
       DATABASE_PASS: password
       DATABASE_NAME: helper
+      JWT_SECRET: my little secret
     
 
   database:

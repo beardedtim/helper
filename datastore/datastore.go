@@ -39,7 +39,9 @@ func (datastore *Datastore) Connect() {
 		dbPort,
 	)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		TranslateError: true,
+	})
 
 	if err != nil {
 		log.WithError(err).Panic("We could not connect to the database")
@@ -87,4 +89,8 @@ func (datastore *Datastore) IsHealthy() bool {
 	log.Trace("We have a healthy connection to the Database")
 
 	return true
+}
+
+func (datastore *Datastore) EnsureMigration() {
+	datastore.Database.AutoMigrate(&UserModel{})
 }

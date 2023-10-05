@@ -32,6 +32,7 @@ func New() (*fizz.Fizz, error) {
 	fizz.GET("/openapi.json", nil, fizz.OpenAPI(infos, "json"))
 
 	applyInternalRoutes(fizz.Group("/internal", "Internal", "Routes used for internal or infrastructure reasons"))
+	applyUserRoutes(fizz.Group("/users", "Users", "Routes for interacting with users"))
 
 	if len(fizz.Errors()) != 0 {
 		return nil, fmt.Errorf("fizz errors: %v", fizz.Errors())
@@ -50,4 +51,21 @@ func applyInternalRoutes(group *fizz.RouterGroup) {
 		}),
 		fizz.ID("Healtcheck"),
 	}, tonic.Handler(HTTPRoutes.Healthcheck(), 200))
+}
+
+func applyUserRoutes(group *fizz.RouterGroup) {
+	group.POST("/", []fizz.OperationOption{
+		fizz.Summary("Creates a new user"),
+		fizz.ID("CreateUser"),
+	}, tonic.Handler(HTTPRoutes.CreateUser, 201))
+
+	group.POST("/login", []fizz.OperationOption{
+		fizz.Summary("Generates a token to be used for future requests"),
+		fizz.ID("GetUserToken"),
+	}, tonic.Handler(HTTPRoutes.GetUserToken, 200))
+
+	group.GET("/:id", []fizz.OperationOption{
+		fizz.Summary("Gets user by ID"),
+		fizz.ID("GetUserByID"),
+	}, tonic.Handler(HTTPRoutes.GetUserById, 200))
 }

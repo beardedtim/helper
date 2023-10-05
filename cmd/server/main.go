@@ -34,6 +34,7 @@ func init() {
 	}
 
 	datastore.DatastoreInstance.Connect()
+	datastore.DatastoreInstance.EnsureMigration()
 }
 
 func main() {
