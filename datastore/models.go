@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserModel struct {
+type UsersModel struct {
 	ID        uuid.UUID `gorm:"primaryKey,type:uuid;default:gen_random_uuid()"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -26,7 +26,7 @@ type PublicUser struct {
 
 // Before we Create the value in the database, we need to
 // hash the password
-func (u *UserModel) BeforeCreate(tx *gorm.DB) (err error) {
+func (u *UsersModel) BeforeCreate(tx *gorm.DB) (err error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(u.Password), 14)
 
 	if err != nil {
@@ -40,7 +40,7 @@ func (u *UserModel) BeforeCreate(tx *gorm.DB) (err error) {
 
 // Before we Update the value in the database, we need to
 // hash the password
-func (u *UserModel) BeforeUpdate(tx *gorm.DB) (err error) {
+func (u *UsersModel) BeforeUpdate(tx *gorm.DB) (err error) {
 	// but only if the password has changed since
 	// if it hasn't changed, we don't want to hash
 	// the hash
@@ -57,7 +57,7 @@ func (u *UserModel) BeforeUpdate(tx *gorm.DB) (err error) {
 	return
 }
 
-func (u *UserModel) PasswordsMatch(email string, plainTextPassword string) (PublicUser, error) {
+func (u *UsersModel) PasswordsMatch(email string, plainTextPassword string) (PublicUser, error) {
 	DatastoreInstance.Database.First(&u, "email = ?", email)
 
 	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(plainTextPassword))
@@ -74,10 +74,17 @@ func (u *UserModel) PasswordsMatch(email string, plainTextPassword string) (Publ
 	}, nil
 }
 
-func (u *UserModel) TableName() string {
+func (u *UsersModel) TableName() string {
 	return "users"
 }
 
+type GroupsModel struct{}
+
+func (g *GroupsModel) TableName() string {
+	return "groups"
+}
+
 type Models struct {
-	Users UserModel
+	Users  UsersModel
+	Groups GroupsModel
 }

@@ -20,6 +20,7 @@ func New() (*fizz.Fizz, error) {
 
 	engine.Use(middleware.Logging())
 	engine.Use(middleware.SharedHeaders())
+	engine.Use(middleware.AuthenticateByHeader())
 
 	fizz := fizz.NewFromEngine(engine)
 
@@ -54,6 +55,8 @@ func applyInternalRoutes(group *fizz.RouterGroup) {
 }
 
 func applyUserRoutes(group *fizz.RouterGroup) {
+	middleware := Middleware{}
+
 	group.POST("/", []fizz.OperationOption{
 		fizz.Summary("Creates a new user"),
 		fizz.ID("CreateUser"),
@@ -67,5 +70,5 @@ func applyUserRoutes(group *fizz.RouterGroup) {
 	group.GET("/:id", []fizz.OperationOption{
 		fizz.Summary("Gets user by ID"),
 		fizz.ID("GetUserByID"),
-	}, tonic.Handler(HTTPRoutes.GetUserById, 200))
+	}, middleware.OnlyAllowAuthorized(), tonic.Handler(HTTPRoutes.GetUserById, 200))
 }

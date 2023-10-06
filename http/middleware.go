@@ -1,6 +1,8 @@
 package http
 
 import (
+	"mckp/helper/repositories"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -63,5 +65,44 @@ func (middleware *Middleware) Logging() gin.HandlerFunc {
 			"LATENCY":   latencyTime,
 			"CLIENT_IP": clientIP,
 		}).Info("HTTP REQUEST")
+	}
+}
+
+func (m *Middleware) AuthenticateByHeader() func(*gin.Context) {
+	return func(ctx *gin.Context) {
+		headerValue := ctx.Request.Header["Authorization"]
+
+		if len(headerValue) == 0 {
+			ctx.Next()
+
+			return
+		}
+
+		token := strings.Replace(headerValue[0], "Bearer ", "", 1)
+		if token != "" {
+			userRepo := repositories.UserRepository{}
+
+			claims, err := userRepo.ParseToken(token)
+
+			if err == nil {
+				ctx.Set("User", claims)
+			} else {
+				log.WithError(err).Warn("FUCK")
+			}
+		}
+
+		ctx.Next()
+	}
+}
+
+func (m *Middleware) OnlyAllowAuthorized() func(*gin.Context) {
+	return func(ctx *gin.Context) {
+		_, exists := ctx.Get("User")
+
+		if exists {
+			ctx.Next()
+		} else {
+			ctx.AbortWithStatusJSON(401, gin.H{"error": "You are not authenticated to do that"})
+		}
 	}
 }

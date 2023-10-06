@@ -91,6 +91,9 @@ func (datastore *Datastore) IsHealthy() bool {
 	return true
 }
 
+// If you create a new Model, you need to add it here
 func (datastore *Datastore) EnsureMigration() {
-	datastore.Database.AutoMigrate(&UserModel{})
+	datastore.Database.AutoMigrate(&UsersModel{})
+	datastore.Database.AutoMigrate(&GroupsModel{})
+
 }

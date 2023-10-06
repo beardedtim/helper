@@ -2,14 +2,17 @@ package repositories
 
 import (
 	"mckp/helper/datastore"
+	"os"
+	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/juju/errors"
 )
 
 type UserRepository struct{}
 
 func (ur *UserRepository) Create(email string, password string) (datastore.PublicUser, error) {
-	user := datastore.UserModel{
+	user := datastore.UsersModel{
 		Email:    email,
 		Password: password,
 	}
@@ -35,7 +38,7 @@ func (ur *UserRepository) Create(email string, password string) (datastore.Publi
 }
 
 func (ur *UserRepository) GetById(id string) (datastore.PublicUser, error) {
-	user := datastore.UserModel{}
+	user := datastore.UsersModel{}
 
 	result := datastore.DatastoreInstance.Database.First(&user, "id = ?", id)
 
@@ -58,7 +61,36 @@ func (ur *UserRepository) GetById(id string) (datastore.PublicUser, error) {
 }
 
 func (ur *UserRepository) ValidatePassword(email string, password string) (datastore.PublicUser, error) {
-	model := datastore.UserModel{}
+	model := datastore.UsersModel{}
 
 	return model.PasswordsMatch(email, password)
+}
+
+type TokenClaims struct {
+	ID string `json:"id"`
+	jwt.RegisteredClaims
+}
+
+func (ur *UserRepository) CreateToken(id string) (string, error) {
+	claims := TokenClaims{
+		ID: id,
+		RegisteredClaims: jwt.RegisteredClaims{
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 60)),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	return token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+}
+
+func (ur *UserRepository) ParseToken(token string) (TokenClaims, error) {
+	claims := &TokenClaims{}
+
+	_, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (any, error) {
+		return []byte(os.Getenv("JWT_SECRET")), nil
+	})
+
+	return *claims, err
 }

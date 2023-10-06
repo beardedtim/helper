@@ -1,16 +1,12 @@
 package http
 
 import (
-	"os"
-
 	"github.com/juju/errors"
 
 	"mckp/helper/datastore"
 	"mckp/helper/repositories"
 
 	"github.com/gin-gonic/gin"
-
-	"github.com/golang-jwt/jwt/v5"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -56,6 +52,10 @@ type GetUserByIdParams struct {
 func (r *Routes) GetUserById(ctx *gin.Context, params *GetUserByIdParams) (datastore.PublicUser, error) {
 	userRepo := repositories.UserRepository{}
 
+	user, _ := ctx.Get("User")
+
+	log.WithField("claims", user).Info("Here you go")
+
 	return userRepo.GetById(params.ID)
 }
 
@@ -77,15 +77,9 @@ func (r *Routes) GetUserToken(ctx *gin.Context, params *GetUserTokenParams) (Get
 		return GetUserTokenResult{}, errors.BadRequestf("passwords do not match")
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id": user.ID,
-	})
-
-	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
-
-	log.WithError(err).Warn("Error trting to sign string")
+	token, err := userRepo.CreateToken(user.ID.String())
 
 	return GetUserTokenResult{
-		Token: tokenString,
+		Token: token,
 	}, err
 }
