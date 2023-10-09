@@ -83,3 +83,35 @@ func (r *Routes) GetUserToken(ctx *gin.Context, params *GetUserTokenParams) (Get
 		Token: token,
 	}, err
 }
+
+type CreateGroupParams struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+func (r *Routes) CreateGroup(ctx *gin.Context, params *CreateGroupParams) (datastore.PublicGroup, error) {
+	groupRepo := repositories.GroupRepositor{}
+
+	return groupRepo.Create(params.Name, params.Description)
+}
+
+type GetGroupByIdParams struct {
+	ID string `path:"id"`
+}
+
+func (r *Routes) GetGroupById(ctx *gin.Context, params *GetGroupByIdParams) (datastore.PublicGroup, error) {
+	groupRepo := repositories.GroupRepositor{}
+
+	return groupRepo.GetById(params.ID)
+}
+
+type AddUserToGroupParams struct {
+	UserID  string `json:"user_id"`
+	GroupID string `path:"id"`
+}
+
+func (r *Routes) AddUserToGroup(ctx *gin.Context, params *AddUserToGroupParams) (datastore.PublicGroup, error) {
+	groupRepo := repositories.GroupRepositor{}
+
+	return groupRepo.AddUserToGroup(params.UserID, params.GroupID)
+}

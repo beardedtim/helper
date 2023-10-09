@@ -8,6 +8,7 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 type Datastore struct {
@@ -41,6 +42,7 @@ func (datastore *Datastore) Connect() {
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		TranslateError: true,
+		Logger:         logger.Default.LogMode(logger.Info),
 	})
 
 	if err != nil {

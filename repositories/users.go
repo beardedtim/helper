@@ -40,7 +40,7 @@ func (ur *UserRepository) Create(email string, password string) (datastore.Publi
 func (ur *UserRepository) GetById(id string) (datastore.PublicUser, error) {
 	user := datastore.UsersModel{}
 
-	result := datastore.DatastoreInstance.Database.First(&user, "id = ?", id)
+	result := datastore.DatastoreInstance.Database.Model(&datastore.UsersModel{}).Preload("Groups").First(&user, "id = ?", id)
 
 	if result.Error != nil {
 		if result.Error.Error() == "record not found" {
@@ -50,11 +50,26 @@ func (ur *UserRepository) GetById(id string) (datastore.PublicUser, error) {
 		return datastore.PublicUser{}, result.Error
 	}
 
+	userGroups := []*datastore.PublicGroup{}
+
+	for _, dbGroup := range user.Groups {
+		group := datastore.PublicGroup{
+			ID:          dbGroup.ID,
+			CreatedAt:   dbGroup.CreatedAt,
+			UpdatedAt:   dbGroup.UpdatedAt,
+			Name:        dbGroup.Name,
+			Description: dbGroup.Description,
+		}
+
+		userGroups = append(userGroups, &group)
+	}
+
 	publicUser := datastore.PublicUser{
 		ID:        user.ID,
 		Email:     user.Email,
 		CreatedAt: user.CreatedAt,
 		UpdatedAt: user.UpdatedAt,
+		Groups:    userGroups,
 	}
 
 	return publicUser, nil
@@ -76,7 +91,7 @@ func (ur *UserRepository) CreateToken(id string) (string, error) {
 		ID: id,
 		RegisteredClaims: jwt.RegisteredClaims{
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 60)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 600)),
 		},
 	}
 

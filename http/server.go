@@ -33,7 +33,10 @@ func New() (*fizz.Fizz, error) {
 	fizz.GET("/openapi.json", nil, fizz.OpenAPI(infos, "json"))
 
 	applyInternalRoutes(fizz.Group("/internal", "Internal", "Routes used for internal or infrastructure reasons"))
+
 	applyUserRoutes(fizz.Group("/users", "Users", "Routes for interacting with users"))
+
+	applyGroupRoutes(fizz.Group("/groups", "Groups", "routes for interacting with groups"))
 
 	if len(fizz.Errors()) != 0 {
 		return nil, fmt.Errorf("fizz errors: %v", fizz.Errors())
@@ -71,4 +74,23 @@ func applyUserRoutes(group *fizz.RouterGroup) {
 		fizz.Summary("Gets user by ID"),
 		fizz.ID("GetUserByID"),
 	}, middleware.OnlyAllowAuthorized(), tonic.Handler(HTTPRoutes.GetUserById, 200))
+}
+
+func applyGroupRoutes(group *fizz.RouterGroup) {
+	middleware := Middleware{}
+
+	group.POST("/", []fizz.OperationOption{
+		fizz.Summary("Creates a new group"),
+		fizz.ID("CreateGroup"),
+	}, middleware.OnlyAllowAuthorized(), tonic.Handler(HTTPRoutes.CreateGroup, 201))
+
+	group.GET("/:id", []fizz.OperationOption{
+		fizz.Summary("Get a group by ID"),
+		fizz.ID("GetGroupById"),
+	}, middleware.OnlyAllowAuthorized(), tonic.Handler(HTTPRoutes.GetGroupById, 200))
+
+	group.POST("/:id/members", []fizz.OperationOption{
+		fizz.Summary("Adds a new user to the group"),
+		fizz.ID("AddUserToGroup"),
+	}, middleware.OnlyAllowAuthorized(), tonic.Handler(HTTPRoutes.AddUserToGroup, 201))
 }

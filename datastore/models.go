@@ -15,13 +15,15 @@ type UsersModel struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 	Email     string         `gorm:"unique"`
 	Password  string
+	Groups    []*GroupsModel `gorm:"many2many:user_groups;"`
 }
 
 type PublicUser struct {
-	ID        uuid.UUID `json:"id"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updaated_at"`
-	Email     string    `json:"email"`
+	ID        uuid.UUID      `json:"id"`
+	CreatedAt time.Time      `json:"created_at"`
+	UpdatedAt time.Time      `json:"updaated_at"`
+	Email     string         `json:"email"`
+	Groups    []*PublicGroup `json:"groups"`
 }
 
 // Before we Create the value in the database, we need to
@@ -78,7 +80,24 @@ func (u *UsersModel) TableName() string {
 	return "users"
 }
 
-type GroupsModel struct{}
+type GroupsModel struct {
+	ID          uuid.UUID `gorm:"primaryKey,type:uuid;default:gen_random_uuid()" `
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	DeletedAt   gorm.DeletedAt `gorm:"index"`
+	Name        string
+	Description string
+	Members     []*UsersModel `gorm:"many2many:user_groups;"`
+}
+
+type PublicGroup struct {
+	ID          uuid.UUID     `json:"id"`
+	CreatedAt   time.Time     `json:"created_at"`
+	UpdatedAt   time.Time     `json:"updatd_at"`
+	Name        string        `json:"name"`
+	Description string        `json:"description"`
+	Members     []*PublicUser `json:"members"`
+}
 
 func (g *GroupsModel) TableName() string {
 	return "groups"
