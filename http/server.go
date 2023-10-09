@@ -25,10 +25,27 @@ func New() (*fizz.Fizz, error) {
 	fizz := fizz.NewFromEngine(engine)
 
 	infos := &openapi.Info{
-		Title:       "Fruits Market",
-		Description: `This is a sample Fruits market server.`,
-		Version:     "1.0.0",
+		Title:       "Helper API",
+		Description: `The RESTful interfae for the Helper application`,
+		Version:     "0.0.1",
 	}
+
+	fizz.Generator().SetSecuritySchemes(map[string]*openapi.SecuritySchemeOrRef{
+		"bearerAuth": {
+			SecurityScheme: &openapi.SecurityScheme{
+				Type:   "http",
+				Scheme: "bearer",
+			},
+		},
+	})
+
+	fizz.Generator().SetServers([]*openapi.Server{
+		{
+			Description: "Helper - development",
+			URL:         "http://localhost:8080",
+		},
+	})
+
 	// Create a new route that serve the OpenAPI spec.
 	fizz.GET("/openapi.json", nil, fizz.OpenAPI(infos, "json"))
 
@@ -50,11 +67,8 @@ func New() (*fizz.Fizz, error) {
 func applyInternalRoutes(group *fizz.RouterGroup) {
 	group.GET("/healthcheck", []fizz.OperationOption{
 		fizz.Summary("Returns if the system is healthy or not"),
-		fizz.Response("500", "Service Not Healthy", nil, nil, map[string]interface{}{
-			"notHealthy": map[string]interface{}{"error": "not healthy"},
-		}),
 		fizz.ID("Healtcheck"),
-	}, tonic.Handler(HTTPRoutes.Healthcheck(), 200))
+	}, tonic.Handler(HTTPRoutes.Healthcheck, 200))
 
 	group.POST("/test", []fizz.OperationOption{
 		fizz.Summary("Just a route for testing things"),
@@ -77,6 +91,9 @@ func applyUserRoutes(group *fizz.RouterGroup) {
 	group.GET("/:id", []fizz.OperationOption{
 		fizz.Summary("Gets user by ID"),
 		fizz.ID("GetUserByID"),
+		fizz.Security(&openapi.SecurityRequirement{
+			"bearerToken": []string{},
+		}),
 	}, middleware.OnlyAllowAuthorized(), tonic.Handler(HTTPRoutes.GetUserById, 200))
 }
 
@@ -86,15 +103,24 @@ func applyGroupRoutes(group *fizz.RouterGroup) {
 	group.POST("/", []fizz.OperationOption{
 		fizz.Summary("Creates a new group"),
 		fizz.ID("CreateGroup"),
+		fizz.Security(&openapi.SecurityRequirement{
+			"bearerToken": []string{},
+		}),
 	}, middleware.OnlyAllowAuthorized(), tonic.Handler(HTTPRoutes.CreateGroup, 201))
 
 	group.GET("/:id", []fizz.OperationOption{
 		fizz.Summary("Get a group by ID"),
 		fizz.ID("GetGroupById"),
+		fizz.Security(&openapi.SecurityRequirement{
+			"bearerToken": []string{},
+		}),
 	}, middleware.OnlyAllowAuthorized(), tonic.Handler(HTTPRoutes.GetGroupById, 200))
 
 	group.POST("/:id/members", []fizz.OperationOption{
 		fizz.Summary("Adds a new user to the group"),
 		fizz.ID("AddUserToGroup"),
+		fizz.Security(&openapi.SecurityRequirement{
+			"bearerToken": []string{"admin"},
+		}),
 	}, middleware.OnlyAllowAuthorized(), tonic.Handler(HTTPRoutes.AddUserToGroup, 201))
 }

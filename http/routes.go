@@ -18,20 +18,19 @@ type HealthcheckResponse struct {
 	Healthy bool `json:"healthy"`
 }
 
-func (r *Routes) Healthcheck() func(*gin.Context) (HealthcheckResponse, error) {
-	return func(c *gin.Context) (HealthcheckResponse, error) {
-		healthy := datastore.DatastoreInstance.IsHealthy()
+func (r *Routes) Healthcheck(c *gin.Context) (HealthcheckResponse, error) {
 
-		if healthy {
-			return HealthcheckResponse{
-				Healthy: healthy,
-			}, nil
-		}
+	healthy := datastore.DatastoreInstance.IsHealthy()
 
+	if healthy {
 		return HealthcheckResponse{
 			Healthy: healthy,
-		}, errors.New("not healthy")
+		}, nil
 	}
+
+	return HealthcheckResponse{
+		Healthy: healthy,
+	}, errors.New("not healthy")
 }
 
 type CreateUserParams struct {
