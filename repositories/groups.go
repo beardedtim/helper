@@ -8,9 +8,9 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-type GroupRepositor struct{}
+type GroupRepository struct{}
 
-func (repo *GroupRepositor) Create(name string, description string) (datastore.PublicGroup, error) {
+func (repo *GroupRepository) Create(name string, description string) (datastore.PublicGroup, error) {
 	group := datastore.GroupsModel{
 		Name:        name,
 		Description: description,
@@ -33,7 +33,7 @@ func (repo *GroupRepositor) Create(name string, description string) (datastore.P
 	return publicGroup, nil
 }
 
-func (repo *GroupRepositor) GetById(id string) (datastore.PublicGroup, error) {
+func (repo *GroupRepository) GetById(id string) (datastore.PublicGroup, error) {
 	group := datastore.GroupsModel{}
 
 	result := datastore.DatastoreInstance.Database.Model(&datastore.GroupsModel{}).Preload("Members").First(&group, "id = ?", id)
@@ -75,7 +75,7 @@ func (repo *GroupRepositor) GetById(id string) (datastore.PublicGroup, error) {
 	return publicGroup, nil
 }
 
-func (repo *GroupRepositor) AddUserToGroup(userId string, groupId string) (datastore.PublicGroup, error) {
+func (repo *GroupRepository) AddUserToGroup(userId string, groupId string) (datastore.PublicGroup, error) {
 	group := datastore.GroupsModel{
 		ID: uuid.MustParse(groupId),
 	}

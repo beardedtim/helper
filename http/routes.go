@@ -90,7 +90,7 @@ type CreateGroupParams struct {
 }
 
 func (r *Routes) CreateGroup(ctx *gin.Context, params *CreateGroupParams) (datastore.PublicGroup, error) {
-	groupRepo := repositories.GroupRepositor{}
+	groupRepo := repositories.GroupRepository{}
 
 	return groupRepo.Create(params.Name, params.Description)
 }
@@ -100,7 +100,7 @@ type GetGroupByIdParams struct {
 }
 
 func (r *Routes) GetGroupById(ctx *gin.Context, params *GetGroupByIdParams) (datastore.PublicGroup, error) {
-	groupRepo := repositories.GroupRepositor{}
+	groupRepo := repositories.GroupRepository{}
 
 	return groupRepo.GetById(params.ID)
 }
@@ -111,7 +111,7 @@ type AddUserToGroupParams struct {
 }
 
 func (r *Routes) AddUserToGroup(ctx *gin.Context, params *AddUserToGroupParams) (datastore.PublicGroup, error) {
-	groupRepo := repositories.GroupRepositor{}
+	groupRepo := repositories.GroupRepository{}
 
 	return groupRepo.AddUserToGroup(params.UserID, params.GroupID)
 }
