@@ -60,8 +60,8 @@ func (r *Routes) GetUserById(ctx *gin.Context, params *GetUserByIdParams) (datas
 }
 
 type GetUserTokenParams struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }
 
 type GetUserTokenResult struct {
@@ -85,8 +85,8 @@ func (r *Routes) GetUserToken(ctx *gin.Context, params *GetUserTokenParams) (Get
 }
 
 type CreateGroupParams struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
+	Name        string `json:"name" binding:"required"`
+	Description string `json:"description" binding:"required"`
 }
 
 func (r *Routes) CreateGroup(ctx *gin.Context, params *CreateGroupParams) (datastore.PublicGroup, error) {
@@ -106,12 +106,23 @@ func (r *Routes) GetGroupById(ctx *gin.Context, params *GetGroupByIdParams) (dat
 }
 
 type AddUserToGroupParams struct {
-	UserID  string `json:"user_id"`
+	UserID  string `json:"user_id" binding:"required"`
 	GroupID string `path:"id"`
 }
 
 func (r *Routes) AddUserToGroup(ctx *gin.Context, params *AddUserToGroupParams) (datastore.PublicGroup, error) {
 	groupRepo := repositories.GroupRepository{}
+	requestingUser := ctx.MustGet("User").(repositories.TokenClaims)
+
+	usersIsAdmin, err := groupRepo.IsUserGroupAdmin(requestingUser.ID, params.GroupID)
+
+	if err != nil {
+		return datastore.PublicGroup{}, err
+	}
+
+	if !usersIsAdmin {
+		return datastore.PublicGroup{}, errors.Unauthorizedf("user is not admin")
+	}
 
 	return groupRepo.AddUserToGroup(params.UserID, params.GroupID)
 }
