@@ -103,7 +103,35 @@ func (g *GroupsModel) TableName() string {
 	return "groups"
 }
 
+type RolesModel struct {
+	ID          uuid.UUID `gorm:"primaryKey,type:uuid;default:gen_random_uuid()" `
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	DeletedAt   gorm.DeletedAt `gorm:"index"`
+	Name        string         `gorm:"unique"`
+	Description string
+}
+
+func (r *RolesModel) TableName() string {
+	return "roles"
+}
+
+type GroupRolesModel struct {
+	Group   GroupsModel `gorm:"foreignKey:GroupId"`
+	GroupId uuid.UUID
+	Role    RolesModel `gorm:"foreignKey:RoleId"`
+	RoleId  uuid.UUID
+	User    UsersModel `gorm:"foreignKey:UserId"`
+	UserId  uuid.UUID
+}
+
+func (g *GroupRolesModel) TableName() string {
+	return "group_roles"
+}
+
 type Models struct {
-	Users  UsersModel
-	Groups GroupsModel
+	Users      UsersModel
+	Groups     GroupsModel
+	Roles      RolesModel
+	GroupRoles GroupRolesModel
 }

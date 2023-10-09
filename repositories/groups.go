@@ -86,3 +86,38 @@ func (repo *GroupRepository) AddUserToGroup(userId string, groupId string) (data
 
 	return repo.GetById(groupId)
 }
+
+func (repo *GroupRepository) IsUserGroupAdmin(userId string, groupId string) (bool, error) {
+	models := datastore.Models{}
+	adminRole := models.Roles
+
+	// Step 1: find the role that is labeled ADMIN
+	result := datastore.DatastoreInstance.Database.Find(&adminRole, "name = ?", "admin")
+
+	if result.Error != nil {
+		return false, result.Error
+	}
+
+	groupRole := models.GroupRoles
+
+	// Get the GroupRole for that user, group, and role
+	result = datastore.DatastoreInstance.Database.Find(
+		&groupRole,
+		"user_id = ? AND group_id = ? AND role_id = ?",
+		userId,
+		groupId,
+		adminRole.ID,
+	)
+
+	if result.Error != nil {
+		return false, result.Error
+	}
+
+	// If the IDs do not match the user is not admin
+	if groupRole.UserId != uuid.MustParse(userId) {
+		return false, nil
+	}
+
+	// If the IDs do match, the user is admin
+	return true, nil
+}

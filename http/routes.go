@@ -115,3 +115,7 @@ func (r *Routes) AddUserToGroup(ctx *gin.Context, params *AddUserToGroupParams) 
 
 	return groupRepo.AddUserToGroup(params.UserID, params.GroupID)
 }
+
+func (r *Routes) Test(ctx *gin.Context) (bool, error) {
+	return true, nil
+}

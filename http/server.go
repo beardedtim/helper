@@ -55,6 +55,10 @@ func applyInternalRoutes(group *fizz.RouterGroup) {
 		}),
 		fizz.ID("Healtcheck"),
 	}, tonic.Handler(HTTPRoutes.Healthcheck(), 200))
+
+	group.POST("/test", []fizz.OperationOption{
+		fizz.Summary("Just a route for testing things"),
+	}, tonic.Handler(HTTPRoutes.Test, 200))
 }
 
 func applyUserRoutes(group *fizz.RouterGroup) {

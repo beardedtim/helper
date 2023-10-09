@@ -97,5 +97,6 @@ func (datastore *Datastore) IsHealthy() bool {
 func (datastore *Datastore) EnsureMigration() {
 	datastore.Database.AutoMigrate(&UsersModel{})
 	datastore.Database.AutoMigrate(&GroupsModel{})
-
+	datastore.Database.AutoMigrate(&RolesModel{})
+	datastore.Database.AutoMigrate(&GroupRolesModel{})
 }
