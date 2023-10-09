@@ -59,10 +59,6 @@ func (repo *GroupRepository) GetById(id string) (datastore.PublicGroup, error) {
 		groupUsers = append(groupUsers, &user)
 	}
 
-	log.WithFields(log.Fields{
-		"group": group.Name,
-	}).Info("Does this have the value I want?")
-
 	publicGroup := datastore.PublicGroup{
 		ID:          group.ID,
 		CreatedAt:   group.CreatedAt,
@@ -76,6 +72,26 @@ func (repo *GroupRepository) GetById(id string) (datastore.PublicGroup, error) {
 }
 
 func (repo *GroupRepository) AddUserToGroup(userId string, groupId string) (datastore.PublicGroup, error) {
+	userInGroup, err := repo.IsUserInGroup(userId, groupId)
+
+	if userInGroup {
+		log.WithFields(log.Fields{
+			"userId":  userId,
+			"groupId": groupId,
+		}).Debug("User already in Group")
+
+		return repo.GetById(groupId)
+	}
+
+	if err != nil {
+		log.WithError(err).WithFields(log.Fields{
+			"userId":  userId,
+			"groupId": groupId,
+		}).Warn("Error adding User to Group")
+
+		return datastore.PublicGroup{}, err
+	}
+
 	group := datastore.GroupsModel{
 		ID: uuid.MustParse(groupId),
 	}
@@ -85,6 +101,24 @@ func (repo *GroupRepository) AddUserToGroup(userId string, groupId string) (data
 	})
 
 	return repo.GetById(groupId)
+}
+
+func (repo *GroupRepository) IsUserInGroup(userId string, groupId string) (bool, error) {
+	user := datastore.UsersModel{}
+
+	result := datastore.DatastoreInstance.Database.Preload("Groups").First(&user, "id = ?", userId)
+
+	if result.Error != nil {
+		return false, result.Error
+	}
+
+	for _, group := range user.Groups {
+		if group.ID == uuid.MustParse(groupId) {
+			return true, nil
+		}
+	}
+
+	return false, nil
 }
 
 func (repo *GroupRepository) IsUserGroupAdmin(userId string, groupId string) (bool, error) {

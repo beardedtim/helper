@@ -102,6 +102,17 @@ type GetGroupByIdParams struct {
 func (r *Routes) GetGroupById(ctx *gin.Context, params *GetGroupByIdParams) (datastore.PublicGroup, error) {
 	groupRepo := repositories.GroupRepository{}
 
+	requestingUser := ctx.MustGet("User").(repositories.TokenClaims)
+	userInGroup, err := groupRepo.IsUserInGroup(requestingUser.ID, params.ID)
+
+	if err != nil {
+		return datastore.PublicGroup{}, err
+	}
+
+	if !userInGroup {
+		return datastore.PublicGroup{}, errors.Unauthorizedf("user not in group")
+	}
+
 	return groupRepo.GetById(params.ID)
 }
 
