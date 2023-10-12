@@ -1,0 +1,31 @@
+:root {
+    /* sizing */
+    --base-padding: 1rem;
+    
+    /* colors */
+    --white: #fefefe;
+    --black: #2A2B2E;
+    --primary: #209CEE;
+    --secondary: #466365;
+    --warn: #FE4A49;
+    --highlight:  #FED766;
+    --teal: #36F1CD;
+
+    /* typography */
+    --header: 'Barlow Condensed', sans-serif;
+    --body: 'Montserrat', sans-serif;
+    --header-line-height: 1.2;
+    --body-line-height: 1.4;
+
+    /* font sizing */
+    --base-font-size: 1rem;
+    --font-scale-ratio: 1.2;
+    --text-xs: calc(var(--base-font-size) / var(--font-scale-ratio) * var(--font-scale-ratio));
+    --text-sm: calc(var(--base-font-size) / var(--font-scale-ratio));
+    --text-md: calc(var(--base-font-size) * var(--font-scale-ratio));
+    --text-lg: calc(var(--base-font-size) * var(--font-scale-ratio) * var(--font-scale-ratio));
+    --text-xl: calc(var(--base-font-size) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio));
+    --text-2xl: calc(var(--base-font-size) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio));
+    --text-3xl: calc(var(--base-font-size) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio));
+    --text-4xl: calc(var(--base-font-size) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio));
+}

@@ -26,3 +26,7 @@ go.work
 # Dist folder
 dist/
 tmp/
+
+
+# Node junk
+node_modules/

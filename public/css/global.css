@@ -1,0 +1,81 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}html, body {
+    width: 100%;
+    height: 100%;
+    font-size: 100%;
+}:root {
+    /* sizing */
+    --base-padding: 1rem;
+    
+    /* colors */
+    --white: #fefefe;
+    --black: #2A2B2E;
+    --primary: #209CEE;
+    --secondary: #466365;
+    --warn: #FE4A49;
+    --highlight:  #FED766;
+    --teal: #36F1CD;
+
+    /* typography */
+    --header: 'Barlow Condensed', sans-serif;
+    --body: 'Montserrat', sans-serif;
+    --header-line-height: 1.2;
+    --body-line-height: 1.4;
+
+    /* font sizing */
+    --base-font-size: 1rem;
+    --font-scale-ratio: 1.2;
+    --text-xs: calc(var(--base-font-size) / var(--font-scale-ratio) * var(--font-scale-ratio));
+    --text-sm: calc(var(--base-font-size) / var(--font-scale-ratio));
+    --text-md: calc(var(--base-font-size) * var(--font-scale-ratio));
+    --text-lg: calc(var(--base-font-size) * var(--font-scale-ratio) * var(--font-scale-ratio));
+    --text-xl: calc(var(--base-font-size) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio));
+    --text-2xl: calc(var(--base-font-size) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio));
+    --text-3xl: calc(var(--base-font-size) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio));
+    --text-4xl: calc(var(--base-font-size) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio));
+}* {
+    font-family: 'Montserrat', sans-serif;
+    font-family: var(--body);
+    line-height: 1.4;
+    line-height: var(--body-line-height);
+}h1, h2, h3, h4, h5, h6 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-family: var(--header);
+    line-height: 1.2;
+    line-height: var(--header-line-height);
+}.text-xs {
+    font-size: calc(1rem / 1.2 * 1.2);
+    font-size: var(--text-xs);
+}.text-sm {
+    font-size: calc(1rem / 1.2);
+    font-size: var(--text-sm);
+}.text-md, h4 {
+    font-size: calc(1rem * 1.2);
+    font-size: var(--text-md);
+}.text-lg, h3 {
+    font-size: calc(1rem * 1.2 * 1.2);
+    font-size: var(--text-lg);
+}.text-xl, h2 {
+    font-size: calc(1rem * 1.2 * 1.2 * 1.2);
+    font-size: var(--text-xl);
+}.text-2xl {
+    font-size: calc(1rem * 1.2 * 1.2 * 1.2 * 1.2);
+    font-size: var(--text-2xl);
+}.text-3xl, h1 {
+    font-size: calc(1rem * 1.2 * 1.2 * 1.2 * 1.2 * 1.2);
+    font-size: var(--text-3xl);
+}.text-4xl {
+    font-size: calc(1rem * 1.2 * 1.2 * 1.2 * 1.2 * 1.2 * 1.2);
+    font-size: var(--text-4xl);
+}html {
+    background: #2A2B2E;
+    background: var(--black);
+    color: #fefefe;
+    color: var(--white);
+    font-size: 1rem;
+    font-size: var(--base-font-size);
+}

@@ -125,7 +125,7 @@ func globalHeadScripts(pageData *PageData) templ.Component {
 	})
 }
 
-func Head(pageData *PageData) templ.Component {
+func globalStyleSheets(pageData *PageData) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, w io.Writer) (err error) {
 		templBuffer, templIsBuffer := w.(*bytes.Buffer)
 		if !templIsBuffer {
@@ -136,6 +136,42 @@ func Head(pageData *PageData) templ.Component {
 		var_4 := templ.GetChildren(ctx)
 		if var_4 == nil {
 			var_4 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		_, err = templBuffer.WriteString("<link rel=\"stylesheet\" href=\"")
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(templ.EscapeString(strings.Join([]string{
+			pageData.AssetURL,
+			"css",
+			"global.css",
+		}, "/")))
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("\">")
+		if err != nil {
+			return err
+		}
+		if !templIsBuffer {
+			_, err = templBuffer.WriteTo(w)
+		}
+		return err
+	})
+}
+
+func Head(pageData *PageData) templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, w io.Writer) (err error) {
+		templBuffer, templIsBuffer := w.(*bytes.Buffer)
+		if !templIsBuffer {
+			templBuffer = templ.GetBuffer()
+			defer templ.ReleaseBuffer(templBuffer)
+		}
+		ctx = templ.InitializeContext(ctx)
+		var_5 := templ.GetChildren(ctx)
+		if var_5 == nil {
+			var_5 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
 		_, err = templBuffer.WriteString("<head>")
@@ -151,6 +187,10 @@ func Head(pageData *PageData) templ.Component {
 			return err
 		}
 		err = globalHeadScripts(pageData).Render(ctx, templBuffer)
+		if err != nil {
+			return err
+		}
+		err = globalStyleSheets(pageData).Render(ctx, templBuffer)
 		if err != nil {
 			return err
 		}

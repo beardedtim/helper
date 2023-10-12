@@ -29,10 +29,19 @@ templ meta() {
 templ globalHeadScripts(pageData *PageData) {
 }
 
+templ globalStyleSheets(pageData *PageData) {
+    <link rel="stylesheet" href={strings.Join([]string{
+        pageData.AssetURL,
+        "css",
+        "global.css",
+    }, "/")} />
+}
+
 templ Head(pageData *PageData) {
     <head>
         @meta()
         @favIcons(pageData)
         @globalHeadScripts(pageData)
+        @globalStyleSheets(pageData)
     </head>
 }

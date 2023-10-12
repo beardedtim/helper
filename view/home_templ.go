@@ -30,11 +30,11 @@ func IndexPage(pageData *PageData) templ.Component {
 		if err != nil {
 			return err
 		}
-		_, err = templBuffer.WriteString("<body><h1>")
+		_, err = templBuffer.WriteString("<body><h1 class=\"text-4xl\">")
 		if err != nil {
 			return err
 		}
-		var_2 := `My Blog`
+		var_2 := `Helper`
 		_, err = templBuffer.WriteString(var_2)
 		if err != nil {
 			return err
