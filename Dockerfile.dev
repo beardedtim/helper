@@ -11,4 +11,6 @@ RUN curl -fLo install.sh https://raw.githubusercontent.com/cosmtrek/air/master/i
     && sh install.sh \
     && cp ./bin/air /bin/air
 
+RUN go install github.com/a-h/templ/cmd/templ@latest
+
 CMD air

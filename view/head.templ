@@ -1,0 +1,38 @@
+package view
+
+import ("strings")
+
+templ favIcons(pageData *PageData) {
+    <link rel="apple-touch-icon" sizes="180x180" href={strings.Join([]string{
+        pageData.AssetURL,
+        "apple-touch-icon.png",
+    }, "/")} />
+    <link rel="icon" type="image/png" sizes="32x32" href={strings.Join([]string{
+        pageData.AssetURL,
+        "favicon-32x32.png",
+    }, "/")} />
+    <link rel="icon" type="image/png" sizes="16x16" href={strings.Join([]string{
+        pageData.AssetURL,
+        "favicon-16x16.png",
+    }, "/")} />
+    <link rel="manifest" href={strings.Join([]string{
+        pageData.AssetURL,
+        "site.webmanifest",
+    }, "/")}  />
+}
+
+templ meta() {
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+}
+
+templ globalHeadScripts(pageData *PageData) {
+}
+
+templ Head(pageData *PageData) {
+    <head>
+        @meta()
+        @favIcons(pageData)
+        @globalHeadScripts(pageData)
+    </head>
+}

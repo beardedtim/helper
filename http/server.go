@@ -7,6 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/loopfz/gadgeto/tonic"
 
+	"mckp/helper/view"
+
 	"github.com/wI2L/fizz"
 	"github.com/wI2L/fizz/openapi"
 )
@@ -21,6 +23,8 @@ func New() (*fizz.Fizz, error) {
 	engine.Use(middleware.Logging())
 	engine.Use(middleware.SharedHeaders())
 	engine.Use(middleware.AuthenticateByHeader())
+
+	applyViewRoutes(engine)
 
 	fizz := fizz.NewFromEngine(engine)
 
@@ -123,4 +127,12 @@ func applyGroupRoutes(group *fizz.RouterGroup) {
 			"bearerToken": []string{"admin"},
 		}),
 	}, middleware.OnlyAllowAuthorized(), tonic.Handler(HTTPRoutes.AddUserToGroup, 201))
+}
+
+func applyViewRoutes(engine *gin.Engine) {
+	viewRoutes := view.Routes{}
+
+	engine.GET("/", viewRoutes.Index)
+
+	engine.Static("/assets", "./public")
 }
