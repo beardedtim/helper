@@ -118,6 +118,31 @@ func globalHeadScripts(pageData *PageData) templ.Component {
 			var_3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
+		_, err = templBuffer.WriteString("<script src=\"")
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(templ.EscapeString(strings.Join([]string{
+			pageData.AssetURL,
+			"js",
+			"global.js",
+		}, "/")))
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("\">")
+		if err != nil {
+			return err
+		}
+		var_4 := ``
+		_, err = templBuffer.WriteString(var_4)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</script>")
+		if err != nil {
+			return err
+		}
 		if !templIsBuffer {
 			_, err = templBuffer.WriteTo(w)
 		}
@@ -133,9 +158,9 @@ func globalStyleSheets(pageData *PageData) templ.Component {
 			defer templ.ReleaseBuffer(templBuffer)
 		}
 		ctx = templ.InitializeContext(ctx)
-		var_4 := templ.GetChildren(ctx)
-		if var_4 == nil {
-			var_4 = templ.NopComponent
+		var_5 := templ.GetChildren(ctx)
+		if var_5 == nil {
+			var_5 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
 		_, err = templBuffer.WriteString("<link rel=\"stylesheet\" href=\"")
@@ -169,9 +194,9 @@ func Head(pageData *PageData) templ.Component {
 			defer templ.ReleaseBuffer(templBuffer)
 		}
 		ctx = templ.InitializeContext(ctx)
-		var_5 := templ.GetChildren(ctx)
-		if var_5 == nil {
-			var_5 = templ.NopComponent
+		var_6 := templ.GetChildren(ctx)
+		if var_6 == nil {
+			var_6 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
 		_, err = templBuffer.WriteString("<head>")

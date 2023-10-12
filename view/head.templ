@@ -27,6 +27,11 @@ templ meta() {
 }
 
 templ globalHeadScripts(pageData *PageData) {
+    <script src={strings.Join([]string{
+        pageData.AssetURL,
+        "js",
+        "global.js",
+    }, "/")}></script>
 }
 
 templ globalStyleSheets(pageData *PageData) {

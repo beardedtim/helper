@@ -14,12 +14,25 @@ curl http://localhost:8080/openapi.json
 
 ### Building Static Assets
 
-__**Build CSS*__
+__**Install Static Deps**_
 
 ```sh
 cd static
 pnpm install
+```
+
+__**Build CSS*__
+
+```sh
+cd static
 npx postcss ./css --dir ../public/css
+```
+
+__**Build JS**__
+
+```sh
+cd static
+npx babel js --out-dir ../public/js
 ```
 
 ### Building Template Files
