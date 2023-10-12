@@ -39,3 +39,11 @@ h1, h2, h3, h4, h5, h6 {
 .text-4xl {
     font-size: var(--text-4xl);
 }
+
+.no-decoration {
+    text-decoration: none;
+}
+
+.color-inherit {
+    color: inherit;
+}

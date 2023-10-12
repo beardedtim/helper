@@ -30,7 +30,7 @@ func IndexPage(pageData *PageData) templ.Component {
 		if err != nil {
 			return err
 		}
-		_, err = templBuffer.WriteString("<body><h1 class=\"text-4xl\">")
+		_, err = templBuffer.WriteString("<body class=\"flex column\"><header class=\"grow-0 p-1\"><a href=\"/\" class=\"no-decoration color-inherit\" title=\"Helper Home\"><h1 class=\"text-4xl\">")
 		if err != nil {
 			return err
 		}
@@ -39,7 +39,25 @@ func IndexPage(pageData *PageData) templ.Component {
 		if err != nil {
 			return err
 		}
-		_, err = templBuffer.WriteString("</h1></body></html>")
+		_, err = templBuffer.WriteString("</h1></a></header><main class=\"grow-1\"><h2>")
+		if err != nil {
+			return err
+		}
+		var_3 := `I am awesome`
+		_, err = templBuffer.WriteString(var_3)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</h2></main><footer class=\"grow-0\"><p class=\"text-xs\">")
+		if err != nil {
+			return err
+		}
+		var_4 := `Copyright &copy; Mck-P 2023 - Current`
+		_, err = templBuffer.WriteString(var_4)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</p></footer></body></html>")
 		if err != nil {
 			return err
 		}

@@ -1,6 +1,10 @@
 :root {
     /* sizing */
     --base-padding: 1rem;
+    --space-sm: calc(var(--base-padding) / 2);
+    --space-md: calc(var(--base-padding) * 1.5);
+    --space-lg: calc(var(--base-padding) * 3);
+    --space-xl: calc(var(--base-padding) * 4);
     
     /* colors */
     --white: #fefefe;
@@ -20,8 +24,9 @@
     /* font sizing */
     --base-font-size: 1rem;
     --font-scale-ratio: 1.2;
-    --text-xs: calc(var(--base-font-size) / var(--font-scale-ratio) * var(--font-scale-ratio));
-    --text-sm: calc(var(--base-font-size) / var(--font-scale-ratio));
+
+    --text-xs: calc(var(--base-font-size) / var(--font-scale-ratio));
+    --text-sm: calc(var(--base-font-size) / var(--font-scale-ratio) * var(--font-scale-ratio));
     --text-md: calc(var(--base-font-size) * var(--font-scale-ratio));
     --text-lg: calc(var(--base-font-size) * var(--font-scale-ratio) * var(--font-scale-ratio));
     --text-xl: calc(var(--base-font-size) * var(--font-scale-ratio) * var(--font-scale-ratio) * var(--font-scale-ratio));
