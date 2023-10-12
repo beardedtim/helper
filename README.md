@@ -33,21 +33,21 @@ curl http://localhost:8080/openapi.json
 
 ### Building Static Assets
 
-__**Install Static Deps**_
+_**Install Static Deps**_
 
 ```sh
 cd static
 pnpm install
 ```
 
-__**Build CSS*__
+_**Build CSS*_
 
 ```sh
 cd static
 npx postcss ./css --dir ../public/css
 ```
 
-__**Build JS**__
+_**Build JS**_
 
 ```sh
 cd static
