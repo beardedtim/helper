@@ -40,7 +40,7 @@ cd static
 pnpm install
 ```
 
-_**Build CSS*_
+_**Build CSS**_
 
 ```sh
 cd static
