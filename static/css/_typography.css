@@ -47,3 +47,20 @@ h1, h2, h3, h4, h5, h6 {
 .color-inherit {
     color: inherit;
 }
+
+.color-primary {
+    color: var(--primary);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.btn {
+    background: var(--primary);
+    border-radius: 4.5px;
+    color: var(--white);
+    padding: 1.5rem 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}

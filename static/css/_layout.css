@@ -53,3 +53,34 @@
 .grow-1 {
     flex-grow: 1;
 }
+
+
+.sticky-top {
+    position: sticky;
+    top: 0;
+}
+
+
+.mb-1 {
+    margin-bottom: var(--base-padding);
+}
+
+.mb-2 {
+    margin-bottom: calc(var(--base-padding) * 2);
+}
+
+.mb-3 {
+    margin-bottom: calc(var(--base-padding) * 3);
+}
+
+.mb-4 {
+    margin-bottom: calc(var(--base-padding) * 4);
+}
+
+.w-full {
+    width: 100%;
+}
+
+.inline-block {
+    display: inline-block;
+}

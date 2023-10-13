@@ -34,19 +34,27 @@ templ globalHeadScripts(pageData *PageData) {
     }, "/")}></script>
 }
 
-templ globalStyleSheets(pageData *PageData) {
+templ globalStyleSheets(pageData *PageData, customSheets []string) {
     <link rel="stylesheet" href={strings.Join([]string{
         pageData.AssetURL,
         "css",
         "global.css",
     }, "/")} />
+
+    for _, sheetName := range customSheets {
+        <link rel="stylesheet" href={strings.Join([]string{
+            pageData.AssetURL,
+            "css",
+            sheetName,
+        }, "/")} />
+    }
 }
 
-templ Head(pageData *PageData) {
+templ Head(pageData *PageData, customSheets []string) {
     <head>
         @meta()
         @favIcons(pageData)
         @globalHeadScripts(pageData)
-        @globalStyleSheets(pageData)
+        @globalStyleSheets(pageData, customSheets)
     </head>
 }

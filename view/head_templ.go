@@ -150,7 +150,7 @@ func globalHeadScripts(pageData *PageData) templ.Component {
 	})
 }
 
-func globalStyleSheets(pageData *PageData) templ.Component {
+func globalStyleSheets(pageData *PageData, customSheets []string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, w io.Writer) (err error) {
 		templBuffer, templIsBuffer := w.(*bytes.Buffer)
 		if !templIsBuffer {
@@ -179,6 +179,24 @@ func globalStyleSheets(pageData *PageData) templ.Component {
 		if err != nil {
 			return err
 		}
+		for _, sheetName := range customSheets {
+			_, err = templBuffer.WriteString("<link rel=\"stylesheet\" href=\"")
+			if err != nil {
+				return err
+			}
+			_, err = templBuffer.WriteString(templ.EscapeString(strings.Join([]string{
+				pageData.AssetURL,
+				"css",
+				sheetName,
+			}, "/")))
+			if err != nil {
+				return err
+			}
+			_, err = templBuffer.WriteString("\">")
+			if err != nil {
+				return err
+			}
+		}
 		if !templIsBuffer {
 			_, err = templBuffer.WriteTo(w)
 		}
@@ -186,7 +204,7 @@ func globalStyleSheets(pageData *PageData) templ.Component {
 	})
 }
 
-func Head(pageData *PageData) templ.Component {
+func Head(pageData *PageData, customSheets []string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, w io.Writer) (err error) {
 		templBuffer, templIsBuffer := w.(*bytes.Buffer)
 		if !templIsBuffer {
@@ -215,7 +233,7 @@ func Head(pageData *PageData) templ.Component {
 		if err != nil {
 			return err
 		}
-		err = globalStyleSheets(pageData).Render(ctx, templBuffer)
+		err = globalStyleSheets(pageData, customSheets).Render(ctx, templBuffer)
 		if err != nil {
 			return err
 		}

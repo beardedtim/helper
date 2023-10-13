@@ -1,0 +1,15 @@
+.bg-black {
+    background: var(--black);
+}
+
+.bg-primary {
+    background: var(--primary);
+}
+
+.text-white {
+    color: var(--white);
+}
+
+.text-black {
+    color: var(--black);
+}

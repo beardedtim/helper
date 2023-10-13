@@ -9,6 +9,10 @@ import "context"
 import "io"
 import "bytes"
 
+import (
+	"strings"
+)
+
 func IndexPage(pageData *PageData) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, w io.Writer) (err error) {
 		templBuffer, templIsBuffer := w.(*bytes.Buffer)
@@ -26,11 +30,11 @@ func IndexPage(pageData *PageData) templ.Component {
 		if err != nil {
 			return err
 		}
-		err = Head(pageData).Render(ctx, templBuffer)
+		err = Head(pageData, []string{"home.css"}).Render(ctx, templBuffer)
 		if err != nil {
 			return err
 		}
-		_, err = templBuffer.WriteString("<body class=\"flex column\"><header class=\"grow-0 p-1\"><a href=\"/\" class=\"no-decoration color-inherit\" title=\"Helper Home\"><h1 class=\"text-4xl\">")
+		_, err = templBuffer.WriteString("<body class=\"flex column\"><header class=\"grow-0 p-1 sticky-top bg-black\"><a href=\"/\" class=\"no-decoration color-inherit inline-block\" title=\"Helper Home\"><h1 class=\"text-4xl\">")
 		if err != nil {
 			return err
 		}
@@ -39,21 +43,396 @@ func IndexPage(pageData *PageData) templ.Component {
 		if err != nil {
 			return err
 		}
-		_, err = templBuffer.WriteString("</h1></a></header><main class=\"grow-1\"><h2>")
+		_, err = templBuffer.WriteString("</h1></a></header><main class=\"grow-1\"><section class=\"hero\" style=\"background-url: \"><div class=\"fade\"><div class=\"flex column\"><h2 class=\"text-4xl\">")
 		if err != nil {
 			return err
 		}
-		var_3 := `I am awesome`
+		var_3 := `Share life with those that matter`
 		_, err = templBuffer.WriteString(var_3)
 		if err != nil {
 			return err
 		}
-		_, err = templBuffer.WriteString("</h2></main><footer class=\"grow-0\"><p class=\"text-xs\">")
+		_, err = templBuffer.WriteString("</h2><h3 class=\"text-3xl mb-2\">")
 		if err != nil {
 			return err
 		}
-		var_4 := `Copyright &copy; Mck-P 2023 - Current`
+		var_4 := `Not with Data Brokers`
 		_, err = templBuffer.WriteString(var_4)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</h3><a href=\"#features\" class=\"btn no-decoration\" title=\"See Features\">")
+		if err != nil {
+			return err
+		}
+		var_5 := `See How`
+		_, err = templBuffer.WriteString(var_5)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</a></div></div></section><section class=\"p-2 why\"><h3 class=\"text-3xl p-2 text-center mb-4\">")
+		if err != nil {
+			return err
+		}
+		var_6 := `Why Helper?`
+		_, err = templBuffer.WriteString(var_6)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</h3><div class=\"flex row info\"><img class=\"data-img\" src=\"")
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(templ.EscapeString(strings.Join([]string{
+			pageData.AssetURL,
+			"imgs",
+			"data.jpg",
+		}, "/")))
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("\" alt=\"On other platforms, your data is collected by the highest bidder\"><div class=\"flex column p-2\"><p class=\"mb-2\">")
+		if err != nil {
+			return err
+		}
+		var_7 := `All around us, our data is being siphoned off by the highest bidder in order to`
+		_, err = templBuffer.WriteString(var_7)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(" ")
+		if err != nil {
+			return err
+		}
+		var_8 := `sell us things that we don't need or indoctrinate our children into the next`
+		_, err = templBuffer.WriteString(var_8)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(" ")
+		if err != nil {
+			return err
+		}
+		var_9 := `cult of personality. We think that there's another way to share what's important`
+		_, err = templBuffer.WriteString(var_9)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(" ")
+		if err != nil {
+			return err
+		}
+		var_10 := `with those that are important to us.`
+		_, err = templBuffer.WriteString(var_10)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</p><p class=\"mb-2\"><em>")
+		if err != nil {
+			return err
+		}
+		var_11 := `Helper`
+		_, err = templBuffer.WriteString(var_11)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</em> ")
+		if err != nil {
+			return err
+		}
+		var_12 := `is a different kind of social network: private, invite-only, and centered around`
+		_, err = templBuffer.WriteString(var_12)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(" ")
+		if err != nil {
+			return err
+		}
+		var_13 := `the groups that give you the most value in your life. Look at our`
+		_, err = templBuffer.WriteString(var_13)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(" <a href=\"#features\" class=\"color-primary\">")
+		if err != nil {
+			return err
+		}
+		var_14 := `feature set`
+		_, err = templBuffer.WriteString(var_14)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</a> ")
+		if err != nil {
+			return err
+		}
+		var_15 := `to see how other families, congregations, and friend groups around the world are using `
+		_, err = templBuffer.WriteString(var_15)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("<em>")
+		if err != nil {
+			return err
+		}
+		var_16 := `Helper`
+		_, err = templBuffer.WriteString(var_16)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</em> ")
+		if err != nil {
+			return err
+		}
+		var_17 := `to share life updates to their group and not to Big Corporations.`
+		_, err = templBuffer.WriteString(var_17)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</p></div></div></section><section id=\"features\" class=\"bg-primary text-white\"><h3 class=\"text-4xl text-center mb-4\">")
+		if err != nil {
+			return err
+		}
+		var_18 := `Features`
+		_, err = templBuffer.WriteString(var_18)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</h3><div class=\"info\"><div class=\"group\"><img class=\"group-img\" src=\"")
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(templ.EscapeString(strings.Join([]string{
+			pageData.AssetURL,
+			"imgs",
+			"privacy.png",
+		}, "/")))
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("\" alt=\"Post on your wall for only your group to see\"><p class=\"p-4 text-lg\"><em>")
+		if err != nil {
+			return err
+		}
+		var_19 := `Privacy`
+		_, err = templBuffer.WriteString(var_19)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</em> ")
+		if err != nil {
+			return err
+		}
+		var_20 := `is at the center of what our platform offers. Groups are invite-only, `
+		_, err = templBuffer.WriteString(var_20)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(" ")
+		if err != nil {
+			return err
+		}
+		var_21 := `private, and we will `
+		_, err = templBuffer.WriteString(var_21)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("<em>")
+		if err != nil {
+			return err
+		}
+		var_22 := `never`
+		_, err = templBuffer.WriteString(var_22)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</em> ")
+		if err != nil {
+			return err
+		}
+		var_23 := `show you ads, use your information to train any AIs, `
+		_, err = templBuffer.WriteString(var_23)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(" ")
+		if err != nil {
+			return err
+		}
+		var_24 := `or ever share your data with anyone you didn't give explicit permission to. `
+		_, err = templBuffer.WriteString(var_24)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(" ")
+		if err != nil {
+			return err
+		}
+		var_25 := `We are tired of being spied on by Big Corporations and think you are too.`
+		_, err = templBuffer.WriteString(var_25)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</p></div><div class=\"group\"><img class=\"group-img\" src=\"")
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(templ.EscapeString(strings.Join([]string{
+			pageData.AssetURL,
+			"imgs",
+			"post.png",
+		}, "/")))
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("\" alt=\"Post on your wall for only your group to see\"><p class=\"p-4 text-lg\"><em>")
+		if err != nil {
+			return err
+		}
+		var_26 := `Posts`
+		_, err = templBuffer.WriteString(var_26)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</em> ")
+		if err != nil {
+			return err
+		}
+		var_27 := `so that you can share pictures, videos, text, or links that you think`
+		_, err = templBuffer.WriteString(var_27)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(" ")
+		if err != nil {
+			return err
+		}
+		var_28 := `your group would like, without the risk of those outside the group brigading you.`
+		_, err = templBuffer.WriteString(var_28)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</p></div><div class=\"group\"><img class=\"group-img\" src=\"")
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(templ.EscapeString(strings.Join([]string{
+			pageData.AssetURL,
+			"imgs",
+			"messaging.jpg",
+		}, "/")))
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("\" alt=\"Keep your conversations in one place and stay up to date with what the group is doing\"><p class=\"p-4 text-lg\"><em>")
+		if err != nil {
+			return err
+		}
+		var_29 := `Messaging`
+		_, err = templBuffer.WriteString(var_29)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</em> ")
+		if err != nil {
+			return err
+		}
+		var_30 := `to ensure that you're always up to date with any changes in plans, where the best`
+		_, err = templBuffer.WriteString(var_30)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(" ")
+		if err != nil {
+			return err
+		}
+		var_31 := `parking is for your party, or for the day-to-day meme sharing that your group does. All without training`
+		_, err = templBuffer.WriteString(var_31)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(" ")
+		if err != nil {
+			return err
+		}
+		var_32 := `some AI.`
+		_, err = templBuffer.WriteString(var_32)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</p></div><div class=\"group\"><img class=\"group-img\" src=\"")
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(templ.EscapeString(strings.Join([]string{
+			pageData.AssetURL,
+			"imgs",
+			"calendar.jpg",
+		}, "/")))
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("\" alt=\"Keep track of what you have to do, when you need to do it, and where it has to get done\"><p class=\"p-4 text-lg\"><em>")
+		if err != nil {
+			return err
+		}
+		var_33 := `Calendar`
+		_, err = templBuffer.WriteString(var_33)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</em> ")
+		if err != nil {
+			return err
+		}
+		var_34 := `to keep you on track for what's happening with your group, where it's happening,`
+		_, err = templBuffer.WriteString(var_34)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(" ")
+		if err != nil {
+			return err
+		}
+		var_35 := `and what you signed up to bring. Don't get the message `
+		_, err = templBuffer.WriteString(var_35)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("<em>")
+		if err != nil {
+			return err
+		}
+		var_36 := `"Where are you?!"`
+		_, err = templBuffer.WriteString(var_36)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</em> ")
+		if err != nil {
+			return err
+		}
+		var_37 := `again with reminder`
+		_, err = templBuffer.WriteString(var_37)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString(" ")
+		if err != nil {
+			return err
+		}
+		var_38 := `notifications and RSVPs.`
+		_, err = templBuffer.WriteString(var_38)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</p></div></div></section></main><footer class=\"grow-0\"><p class=\"text-xs\">")
+		if err != nil {
+			return err
+		}
+		var_39 := `Copyright &copy; Mck-P 2023 - Current`
+		_, err = templBuffer.WriteString(var_39)
 		if err != nil {
 			return err
 		}
